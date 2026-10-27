@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Книги{% endblock %}
+
+{% block content %}
+<h2>Результат фільтрування(Книги не в наявності)</h2>
+{% for book in books_filter %}
+    <p>{{ book.title }} — {{ book.author }}</p>
+{% empty %}
+    <p>Книг не знайдено.</p>
+{% endfor %}
+
+<h2>Книги дешевше 500 і є в наявності</h2>
+{% for book in books_q %}
+    <p>{{ book.title }} — {{ book.price }}</p>
+{% empty %}
+    <p>Книг не знайдено.</p>
+{% endfor %}
+
+<h2>Кількість книг у категоріях</h2>
+{% for category in categories %}
+    <p>{{ category.name }} — {{ category.books_count }}</p>
+{% endfor %}
+
+<h2>Всі книги</h2>
+{% for book in all_books %}
+    <p>{{ book.title }} — {{ book.author }}</p>
+{% endfor %}
+{% endblock %}
+
