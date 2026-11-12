@@ -2,12 +2,80 @@
 {% block title %}Книги{% endblock %}
 
 {% block content %}
+<h1 class="text-center my-4">Книги</h1>
+
 <div class="row">
-    <div class="col">
-        <h1 class="my-4">Список книг</h1>
-        {% for object in object_list %}
-            <p>{{ object.title }}</p>
-        {% endfor %}
+    <form method="GET" class="d-flex gap-2 mb-3">
+        <input
+                type="text"
+                name="title"
+                class="form-control"
+                placeholder="Введіть назву книги"
+                value="{{ request.GET.title|default:'' }}"
+        >
+        <button type="submit" class="btn btn-outline-dark">
+            Пошук
+        </button>
+        <a href="{% url 'books:books' %}" class="btn btn-outline-dark">
+            Скинути
+        </a>
+    </form>
+
+    {% for object in object_list %}
+
+    <div class="col-sm-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">
+                    <a href="{% url 'books:book_detail' pk=object.id %}" class="text-decoration-none text-black"
+                       style="font-size: 22px">
+                        {{ object.title }}
+                    </a>
+                </h5>
+                <h6 class="card-subtitle mb-3 text-dark" style="font-size: 18px">
+                    Ціна: {{ object.price }} грн.
+                </h6>
+                <p class="card-text">
+                    {{ object.description|truncatewords:10 }}
+                </p>
+                <a href="{% url 'books:category_detail' slug=object.category.slug %}" class="text-decoration-none">
+                    #{{ object.category.name }}
+                </a>
+            </div>
+        </div>
     </div>
+    {% endfor %}
+
+    {% if is_paginated %}
+    <nav aria-label="Навігація сторінками">
+        <ul class="pagination justify-content-center">
+
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ page_obj.previous_page_number }}&title={{ request.GET.title|urlencode }}">
+                    Назад
+                </a>
+            </li>
+            {% endif %}
+
+            <li class="page-item active">
+            <span class="page-link">
+                {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+            </span>
+            </li>
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ page_obj.next_page_number }}&title={{ request.GET.title|urlencode }}">
+                    Далі
+                </a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+    {% endif %}
 </div>
 {% endblock %}

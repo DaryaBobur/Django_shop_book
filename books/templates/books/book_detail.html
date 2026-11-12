@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Книга{% endblock %}
+
+{% block content %}
+<a href="{% url 'books:books' %}" class="btn btn-outline-dark mt-3 btn-xs">
+    Назад до списку
+</a>
+<h1 class="my-3 text-center" style="font-size: 28px">Інформація про Книгу</h1>
+
+<div class="card">
+    <div class="card-header" style="font-size: 28px; font-weight: bold;">
+        {{ object.title }}
+        <a href="{% url 'books:book_update' pk=object.id %}" class="text-decoration-none ms-2 me-2">
+            <button type="button" class="btn btn-outline-success btn-sm">Редагувати</button>
+        </a>
+        <a href="{% url 'books:book_delete' pk=object.id %}" class="text-decoration-none">
+            <button type="button" class="btn btn-outline-danger btn-sm">Видалити</button>
+        </a>
+    </div>
+    <div class="card-body">
+        <p class="card-text text-dark" style="font-size: 18px">Ціна: {{ object.price }} грн.</p>
+        <p class="card-title text-dark" style="font-size: 18px">Опис: {{ object.description }}</p>
+        <a href="#" class="btn btn-primary mt-3" style="font-size: 18px">Замовити</a>
+    </div>
+</div>
+
+{% endblock %}
