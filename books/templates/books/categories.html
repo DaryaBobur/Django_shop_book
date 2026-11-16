@@ -10,19 +10,26 @@
             {% for object in object_list %}
             <tr>
                 <td class="align-middle">
-                    <a href="{% url 'books:category_detail' slug=object.slug %}" class="text-decoration-none text-info-emphasis" style="font-size: 18px">
+                    <a href="{% url 'books:category_detail' slug=object.slug %}"
+                       class="text-decoration-none text-info-emphasis" style="font-size: 18px">
                         {{ object.name }}
                     </a>
                 </td>
                 <td class="text-end">
-                    <a href="{% url 'books:category_update' slug=object.slug %}">
-                        <button type="button" class="btn btn-outline-success btn-sm">Редагувати</button>
+                    {% if perms.books.change_category %}
+                    <a href="{% url 'books:category_update' slug=object.slug %}"
+                       class="btn btn-outline-success btn-sm">
+                        Редагувати
                     </a>
+                    {% endif %}
                 </td>
                 <td class="text-end" style="width: 100px;">
-                    <a href="{% url 'books:category_delete' slug=object.slug %}">
-                        <button type="button" class="btn btn-outline-danger btn-sm">Видалити</button>
+                    {% if perms.books.delete_category %}
+                    <a href="{% url 'books:category_delete' slug=object.slug %}"
+                       class="btn btn-outline-danger btn-sm">
+                        Видалити
                     </a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

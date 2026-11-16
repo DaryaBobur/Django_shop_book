@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -22,30 +23,36 @@ class CategoryDetailView(DetailView):
         context['books'] = Book.objects.filter(category=self.object)
         return context
 
-class CategoryCreateView(SuccessMessageMixin, CreateView):
+class CategoryCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     model = Category
     template_name = 'books/category_create.html'
     form_class = CategoryForm
     success_url = reverse_lazy('books:category')
+    permission_required = "books.add_category"
+    raise_exception = True
 
     def get_success_message(self, cleaned_data):
         message = 'Категорію {name} створено'
         return message.format(**cleaned_data)
 
-class CategoryUpdateView(SuccessMessageMixin, UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Category
     template_name = 'books/category_update.html'
     form_class = CategoryForm
     success_url = reverse_lazy('books:category')
+    permission_required = "books.change_category"
+    raise_exception = True
 
     def get_success_message(self, cleaned_data):
         message = 'Категорію {name} відредаговано'
         return message.format(**cleaned_data)
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Category
     template_name = 'books/category_delete.html'
     success_url = reverse_lazy('books:category')
+    permission_required = "books.delete_category"
+    raise_exception = True
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -59,10 +66,6 @@ class CategoryDeleteView(DeleteView):
         message = 'Категорію {name} видалено'
         return message.format(**cleaned_data)
 
-def books_list(request):
-    qs = Book.objects.all()
-    context = {'object_list': qs}
-    return render(request, 'books/books.html', context)
 
 class BookListView(ListView):
     model = Book
@@ -85,30 +88,36 @@ class BookDetailView(DetailView):
     model = Book
     template_name = 'books/book_detail.html'
 
-class BookCreateView(SuccessMessageMixin, CreateView):
+class BookCreateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     model = Book
     template_name = 'books/book_create.html'
     form_class = BookForm
     success_url = reverse_lazy('books:books')
+    permission_required = "books.add_product"
+    raise_exception = True
 
     def get_success_message(self, cleaned_data):
         message = 'Книгу {title} створено'
         return message.format(**cleaned_data)
 
-class BookUpdateView(SuccessMessageMixin, UpdateView):
+class BookUpdateView(LoginRequiredMixin, PermissionRequiredMixin,SuccessMessageMixin, UpdateView):
     model = Book
     template_name = 'books/book_update.html'
     form_class = BookForm
     success_url = reverse_lazy('books:books')
+    permission_required = "books.change_product"
+    raise_exception = True
 
     def get_success_message(self, cleaned_data):
         message = 'Книгу {title} відредаговано'
         return message.format(**cleaned_data)
 
-class BookDeleteView(DeleteView):
+class BookDeleteView(LoginRequiredMixin, PermissionRequiredMixin,DeleteView):
     model = Book
     template_name = 'books/book_delete.html'
     success_url = reverse_lazy('books:books')
+    permission_required = "books.delete_product"
+    raise_exception = True
 
     def form_valid(self, form):
         response = super().form_valid(form)
