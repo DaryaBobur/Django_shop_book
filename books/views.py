@@ -121,7 +121,7 @@ class BookDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Book
     template_name = 'books/book_delete.html'
     success_url = reverse_lazy('books:books')
-    permission_required = "books.delete_product"
+    permission_required = "books.delete_book"
     raise_exception = True
 
     def form_valid(self, form):
