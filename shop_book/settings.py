@@ -36,10 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'books',
-    "allauth",
-    "allauth.account",
-
+    'accounts',
+    'allauth',
+    'allauth.account',
+    'debug_toolbar',
 ]
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'shop_book.middleware.RequestTimeMiddleware',
 ]
 
 ROOT_URLCONF = 'shop_book.urls'
@@ -77,7 +82,7 @@ WSGI_APPLICATION = 'shop_book.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db_work.sqlite3',
     }
 }
 
@@ -114,7 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static',]
+STATICFILES_DIRS = [BASE_DIR / 'static', ]
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
@@ -150,7 +155,13 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': BASE_DIR.joinpath('log/application.log'),
             'formatter': 'verbose',
-        }
+        },
+        'duration_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR.joinpath('log/duration.log'),
+            'formatter': 'verbose',
+        },
     },
     'loggers': {
         'django.request': {
@@ -162,6 +173,12 @@ LOGGING = {
             'level': 'DEBUG',
             'handlers': ['file'],
         },
+
+        'duration_time': {
+            'handlers': ['duration_file'],
+            'level': 'DEBUG',
+        },
+
     }
 }
 
@@ -182,3 +199,8 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 
 LOGIN_REDIRECT_URL = "/books/"
 LOGOUT_REDIRECT_URL = "/books/"
+
+if DEBUG:
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]

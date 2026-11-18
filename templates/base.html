@@ -20,7 +20,7 @@
     <div class="nav-overflow pt-2" data-bs-toggle="nav-overflow" style="background-color: #343A40">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="navbar-brand px-3" style="color: #FFFDF7; font-size: larger;" href="">ShopBooks</a>
+                <a class="navbar-brand px-3" style="color: #FFFDF7; font-size: larger;" href="{% url 'books:books' %}">ShopBooks</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {% if request.path == category_home_url %}active{% endif %}"
@@ -40,36 +40,32 @@
                    style="color: #F5E8C5; {% if request.path == category_create_url %}background-color: #F5E8C5; color: #343A40; border-radius: 6px;{% endif %}">
                     Створення
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu me-auto mb-2 mb-lg-0">
                     <li><a class="dropdown-item" href="{% url 'books:category_create' %}">Категорії</a></li>
                     <li><a class="dropdown-item" href="{% url 'books:book_create' %}">Книги</a></li>
                 </ul>
             </li>
-              {% endif %}
-            <li>
+            {% endif %}
+            <li class="nav-item ms-auto d-flex align-items-center">
                 {% if user.is_authenticated %}
-                <span class="navbar-text me-2">
-        Вітаємо, {{ user.email|default:user.username }}!
-    </span>
-
-                <a href="" class="nav-link"> Мої замовлення </a>
-
+                <span class="navbar-text me-2" style="color: #F5E8C5">
+                     Вітаємо, {{ user.email|default:user.username }}!
+                </span>
+<!--                <a href="" class="nav-link"> Мої замовлення </a>-->
                 <form method="post" action="{% url 'account_logout' %}" class="d-inline">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-secondary">
+                    <button type="submit" class="btn btn-outline-secondary me-3" style="color: #F5E8C5">
                         Вийти
                     </button>
                 </form>
                 {% else %}
-                <a href="{% url 'account_login' %}" class="btn btn-outline-secondary"> Увійти </a>
-                <a href="{% url 'account_signup' %}" class="btn btn-outline-primary">
+                <a href="{% url 'account_login' %}" class="btn btn-outline-secondary me-2" style="color: #F5E8C5"> Увійти </a>
+                <a href="{% url 'account_signup' %}" class="btn btn-outline-secondary me-2" style="color: #F5E8C5">
                     Зареєструватися
                 </a>
                 {% endif %}
             </li>
         </ul>
-
-
     </div>
     <div class="container">
         {% if messages %}

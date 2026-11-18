@@ -2,7 +2,7 @@ from django.urls import path
 
 from books.views import (CategoryListView, CategoryDetailView, CategoryCreateView,
                          CategoryUpdateView, CategoryDeleteView, BookListView, BookDetailView, BookCreateView,
-                         BookUpdateView, BookDeleteView
+                         BookUpdateView, BookDeleteView,
                          )
 
 urlpatterns = [
